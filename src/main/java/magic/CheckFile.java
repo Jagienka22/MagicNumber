@@ -14,10 +14,10 @@ public class CheckFile {
         this.nameOfFile = nameOfFile;
     }
 
-    public static String whichFile() {
+    public static String checkFileContentMatchesFileExtension() {
         String stringHex = "";
         String result = "";
-        if (nameOfFile.contains(".txt") || nameOfFile.contains(".gif") || nameOfFile.contains(".jpg")) {
+        if (nameOfFile.contains(".txt") || nameOfFile.contains(".gif") || nameOfFile.contains(".jpg") || nameOfFile.contains(".jpeg")) {
             try {
                 FileInputStream in = new FileInputStream(nameOfFile);
 
@@ -28,7 +28,7 @@ public class CheckFile {
                 }
                 if (nameOfFile.contains((".gif")))
                     result = checkMagicNumberForGif(stringHex);
-                if (nameOfFile.contains((".jpg")))
+                if (nameOfFile.contains((".jpg")) || nameOfFile.contains(".jpeg"))
                     result = checkMagicNumberForJpg(stringHex);
                 if (nameOfFile.contains((".txt")))
                     result = checkMagicNumberForTxt();
@@ -39,39 +39,39 @@ public class CheckFile {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Takiego pliku nie obsługujemy");
+            result = "This file isn't handled.";
         }
         return result;
     }
 
-    public static String checkMagicNumberForGif(String s) {
+    private static String checkMagicNumberForGif(String s) {
         String result;
         if (s.contains("47 49 46 38 39 61") || s.contains("47 49 46 38 37 61")) {
-            result = "Tak, ten plik jest zgodny z rozszerzeniem.";
+            result = "Yes, file content matches file extension (gif).";
         } else
-            result = "Nie, ten plik nie jest zgodny z rozszerzeniem.";
+            result = "No, file content doesn't match file extension (gif).";
 
         return result;
     }
 
-    public static String checkMagicNumberForJpg(String s) {
+    private static String checkMagicNumberForJpg(String s) {
         String result = "";
-        if (s.contains("ff d8") || s.contains("ff d9") || s.contains("4a 46 49 46") || s.contains("45 78 69 66") || s.contains("FF D8 FF E0 00 10 4A 46 49 46 00 01") || s.contains("ff d8 ff e1" + " 45 78 69 66 00 00")) {
-            result = "Tak, ten plik jest zgodny z rozszerzeniem.";
+        if ((s.startsWith("ff d8") && s.endsWith("ff d9")) || s.contains("4a 46 49 46") || s.contains("45 78 69 66") || s.contains("ff d8 ff e0 00 10 4a 46 49 46 00 01") || (s.startsWith("ff d8 ff e1") && s.substring(18, 35).equals("45 78 69 66 00 00"))) {
+            result = "Yes, file content matches file extension (jpg).";
         } else
-            result = "Nie, ten plik nie jest zgodny z rozszerzeniem";
+            result = "No, file content doesn't match file extension (jpg).";
         return result;
     }
 
-    public static String checkMagicNumberForTxt() throws IOException {
+    private static String checkMagicNumberForTxt() throws IOException {
         String result = "";
         Path path = FileSystems.getDefault().getPath(nameOfFile);
         String mimeType = Files.probeContentType(path);
 
         if (mimeType.contains("text")) {
-            result = "Tak, ten plik jest zgodny z rozszerzeniem.";
+            result = "Yes, file content matches file extension (txt). ";
         } else {
-            result = "Nie, ten plik nie jest zgodny z rozszerzeniem";
+            result = "No, file content doesn't match file extension (txt).";
         }
         return result;
     }
