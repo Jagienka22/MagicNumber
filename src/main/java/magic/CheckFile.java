@@ -7,14 +7,14 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class CheckFile {
+class CheckFile {
     private String nameOfFile;
 
     CheckFile(String nameOfFile) {
         this.nameOfFile = nameOfFile;
     }
 
-    public String checkFileContentMatchesFileExtension() {
+    String checkFileContentMatchesFileExtension() {
         String stringHex = "";
         String result = "";
         if (nameOfFile.contains(".txt") || nameOfFile.contains(".gif") || nameOfFile.contains(".jpg") || nameOfFile.contains(".jpeg")) {
