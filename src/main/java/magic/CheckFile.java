@@ -8,13 +8,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CheckFile {
-    private static String nameOfFile;
+    private String nameOfFile;
 
     CheckFile(String nameOfFile) {
         this.nameOfFile = nameOfFile;
     }
 
-    public static String checkFileContentMatchesFileExtension() {
+    public String checkFileContentMatchesFileExtension() {
         String stringHex = "";
         String result = "";
         if (nameOfFile.contains(".txt") || nameOfFile.contains(".gif") || nameOfFile.contains(".jpg") || nameOfFile.contains(".jpeg")) {
@@ -44,7 +44,7 @@ public class CheckFile {
         return result;
     }
 
-    private static String checkMagicNumberForGif(String s) {
+    private String checkMagicNumberForGif(String s) {
         String result;
         if (s.contains("47 49 46 38 39 61") || s.contains("47 49 46 38 37 61")) {
             result = "Yes, file content matches file extension (gif).";
@@ -54,7 +54,7 @@ public class CheckFile {
         return result;
     }
 
-    private static String checkMagicNumberForJpg(String s) {
+    private String checkMagicNumberForJpg(String s) {
         String result = "";
         if ((s.startsWith("ff d8") && s.endsWith("ff d9")) || s.contains("4a 46 49 46") || s.contains("45 78 69 66") || s.contains("ff d8 ff e0 00 10 4a 46 49 46 00 01") || (s.startsWith("ff d8 ff e1") && s.substring(18, 35).equals("45 78 69 66 00 00"))) {
             result = "Yes, file content matches file extension (jpg).";
@@ -63,7 +63,7 @@ public class CheckFile {
         return result;
     }
 
-    private static String checkMagicNumberForTxt() throws IOException {
+    private String checkMagicNumberForTxt() throws IOException {
         String result = "";
         Path path = FileSystems.getDefault().getPath(nameOfFile);
         String mimeType = Files.probeContentType(path);
